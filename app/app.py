@@ -46,9 +46,23 @@ class TodoSimple(Resource):
         return {'example with token': todo_id}
 
 
+
 # Simple examples
 api.add_resource(TodoSimple, '/todo/<string:todo_id>')
 # api.add_resource(HelloWorld, '/hello')
+
+
+class TextExample(Resource):
+    def get(self):
+        # fp = os.path.expanduser('~/cltk_data/latin/text/latin_text_perseus/Ovid/opensource/ovid.ibis_lat.xml.json')
+        fp = 'example.json'
+        with open(fp) as file_open:
+            return json.load(file_open)
+
+# http://localhost:5000/lang
+api.add_resource(TextExample, '/text_example')
+
+
 
 
 if __name__ == '__main__':

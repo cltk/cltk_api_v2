@@ -11,7 +11,9 @@ RUN apt-get install -y python python-pip python-virtualenv nginx gunicorn superv
 # Setup flask application
 RUN mkdir -p /deploy/app
 COPY app /deploy/app
-RUN pip install -r /deploy/app/requirements.txt
+COPY example.json /deploy/app
+WORKDIR /deploy/app
+RUN pip install -r requirements.txt
 
 # Setup nginx
 RUN rm /etc/nginx/sites-enabled/default
@@ -23,6 +25,7 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY gunicorn.conf /etc/supervisor/conf.d/gunicorn.conf
+
 
 # Start processes
 CMD ["/usr/bin/supervisord"]

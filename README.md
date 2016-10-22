@@ -4,7 +4,7 @@
 
 export PROJECT_ID="cltk-api-nginx"
 
-export VERSION="v24"
+export VERSION="v25"
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker build -t gcr.io/$PROJECT_ID/hello-node-nginx:$VERSION .
