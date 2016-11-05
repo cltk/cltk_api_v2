@@ -4,6 +4,7 @@ FROM ubuntu:16.04
 MAINTAINER Kyle P. Johnson <kyle@kyle-p-johnson.com>
 
 ENV DEBIAN_FRONTEND noninteractive
+EXPOSE 80
 
 RUN apt-get update
 RUN apt-get install -y python python-pip python-virtualenv nginx gunicorn supervisor git
