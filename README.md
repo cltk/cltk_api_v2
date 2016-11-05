@@ -1,44 +1,13 @@
-## nginx-gunicorn-flask
+# About
 
+This is the CLTK's API, including the code, Dockerfile, and deployment script for Google Cloud Platform.
 
+To develop and run this app and run on GCP:
 
-export PROJECT_ID="cltk-api-nginx"
-
-export VERSION="v25"
-docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
-docker build -t gcr.io/$PROJECT_ID/hello-node-nginx:$VERSION .
-docker run -p 80:80 --name hello_tutorial_nginx gcr.io/$PROJECT_ID/hello-node-nginx:$VERSION
-
-
-docker build -t $NAME .
-docker run -p 80:80 --name $NAME testing
-
-
-This repository contains files necessary for building a Docker image of
-Nginx + Gunicorn + Flask.
-
-
-### Base Docker Image
-
-* [ubuntu:12.04](https://registry.hub.docker.com/_/ubuntu/)
-
-
-### Installation
-
-1. Install [Docker](https://www.docker.com/).
-
-2. Download [automated build](https://registry.hub.docker.com/u/danriti/nginx-gunicorn-flask/) from public [Docker Hub Registry](https://registry.hub.docker.com/):
-
-```bash
-docker pull danriti/nginx-gunicorn-flask
-```
-
-
-### Usage
-
-```bash
-docker run -d -p 80:80 danriti/nginx-gunicorn-flask
-```
-
-After few seconds, open `http://<host>` to see the Flask app.
+1. Install Docker on your local machine
+1. Run `gcp_build_deploy.sh build` to test that everything works fine. `curl localhost` will give you `The CLTK API`. 
+1. Install the [GCP commandline tools](https://cloud.google.com/sdk/docs/#install_the_latest_cloud_tools_version_cloudsdk_current_version).
+1. Initialize gcloud settings with `gcloud init`
+1. Edit the variables at the top of `gcp_build_deploy.sh` if you need.
+1. Run `gcp_build_deploy.sh deploy`. This will take about 5 minutes and at the end you'll be given an external IP to go to. This should also give `The CLTK API`.
+1. To completely teardown your remote deployment, run `gcp_build_deploy.sh destroy`.
