@@ -4,7 +4,7 @@
 
 arg="$1"
 
-export DOCKER_BUILD_VERSION="v3"
+export DOCKER_BUILD_VERSION="v0"
 export PROJECT_ID="cltk-api-148615"
 export ACCOUNT="kyle@kyle-p-johnson.com"
 export REGION="us-central1"
@@ -42,11 +42,11 @@ if [ $arg = "deploy" ]; then
     echo "Creating cluster on GCP ..."
     gcloud container clusters create $CLUSTER_NAME --zone $ZONE --machine-type $MACHINE_TYPE \
       --num-nodes $NUM_NODES --enable-autoscaling --min-nodes=$MIN_NODES --max-nodes=$MAX_NODES
+    # Must get credentials for cluster first, before interacting with it
+    gcloud container clusters get-credentials $CLUSTER_NAME
     echo ""
 
     echo 'Deploying cluster (as a "pod") ...'
-    # Must get credentials for cluster first, before interacting with it
-    gcloud container clusters get-credentials $CLUSTER_NAME
     kubectl run $SERVICE_NAME --image=gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION --port=80
     echo ""
 
@@ -60,8 +60,13 @@ if [ $arg = "deploy" ]; then
     # TODO: get just external IP and curl it with: `kubectl describe services $DEPLOYMENT_NAME | grep "LoadBalancer Ingress"`
 fi
 
-#TODO: Figure out whether "service" and "deployment" need different names
+if [ $arg = "update" ]; then
+    kubectl set image deployment/$SERVICE_NAME $SERVICE_NAME=gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION
+fi
+
+#TODO: Figure out whether "service" and "deployment" need different names (though it works fine w/ them being same)
 if [ $arg = "destroy" ]; then
+    echo "Destroying service, deployment, and cluster ..."
     kubectl delete services $SERVICE_NAME
     kubectl delete deployment $SERVICE_NAME
     gcloud container clusters delete $CLUSTER_NAME

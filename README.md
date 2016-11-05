@@ -11,3 +11,6 @@ To develop and run this app and run on GCP:
 1. Edit the variables at the top of `gcp_build_deploy.sh` if you need.
 1. Run `gcp_build_deploy.sh deploy`. This will take about 5 minutes and at the end you'll be given an external IP to go to. This should also give `The CLTK API`.
 1. To completely teardown your remote deployment, run `gcp_build_deploy.sh destroy`.
+
+To update the code and deploy a new version of if, increment `DOCKER_BUILD_VERSION` \
+and run `gcp_build_deploy.sh build` and then `gcp_build_deploy.sh update`.
