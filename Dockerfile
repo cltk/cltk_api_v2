@@ -1,6 +1,6 @@
 # Multithread Flask app with Gunicorn, then serve via Nginx
 
-FROM ubuntu:12.04
+FROM ubuntu:16.04
 MAINTAINER Kyle P. Johnson <kyle@kyle-p-johnson.com>
 
 ENV DEBIAN_FRONTEND noninteractive

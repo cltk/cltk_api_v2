@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export PROJECT_ID="cltk-api-148615"
-export VERSION="v1"
+export VERSION="v2"
 
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
