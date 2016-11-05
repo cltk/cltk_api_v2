@@ -43,7 +43,7 @@ class HelloWorld(Resource):
 # Simple example
 class TodoSimple(Resource):
     def get(self, todo_id):
-        return {'example with token': todo_id}
+        return {'Example with token': todo_id}
 
 
 

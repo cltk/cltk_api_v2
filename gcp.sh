@@ -41,7 +41,7 @@ if [ $arg = "deploy" ]; then
 
     echo "Creating cluster on GCP ..."
     gcloud container clusters create $CLUSTER_NAME --zone $ZONE --machine-type $MACHINE_TYPE \
-      --num-nodes $NUM_NODES --enable-autoscaling --min-nodes=$MIN_NODES --max-nodes=$MAX_NODES
+      --num-nodes $NUM_NODES --enable-autoscaling --min-nodes $MIN_NODES --max-nodes $MAX_NODES
     # Must get credentials for cluster first, before interacting with it
     gcloud container clusters get-credentials $CLUSTER_NAME
     echo ""
@@ -57,7 +57,8 @@ if [ $arg = "deploy" ]; then
     echo 'If no "EXTERNAL-IP" available, run "kubectl get services $DEPLOYMENT_NAME" (getting $DEPLOYMENT_NAME from this Bash file).'
     wait 60
     kubectl get services $SERVICE_NAME
-    # TODO: get just external IP and curl it with: `kubectl describe services $DEPLOYMENT_NAME | grep "LoadBalancer Ingress"`
+    # TODO: get just external IP and curl it with: `kubectl describe services $SERVICE_NAME | grep "LoadBalancer Ingress"`
+    echo "Try curling the external IP. If no response, try again in a few mins."
 fi
 
 if [ $arg = "update" ]; then
