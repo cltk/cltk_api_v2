@@ -5,5 +5,5 @@ export VERSION="v1"
 
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
-docker build -t gcr.io/$PROJECT_ID/hello-node-nginx:$VERSION .
-docker run -p 80:80 --name hello_tutorial_nginx gcr.io/$PROJECT_ID/hello-node-nginx:$VERSION
+docker build -t gcr.io/$PROJECT_ID/cltk_api_v2:$VERSION .
+docker run -p 80:80 --name cltk_api_v2 gcr.io/$PROJECT_ID/cltk_api_v2:$VERSION
