@@ -13,4 +13,4 @@ To develop and run this app and run on GCP:
 1. To completely teardown your remote deployment, run `gcp.sh destroy`.
 
 To update the code and deploy a new version of if, increment `DOCKER_BUILD_VERSION` \
-and run `gcp.sh build` and then `gcp.sh update`.
+and run `/gcp.sh build && ./gcp.sh update`.

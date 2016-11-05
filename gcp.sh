@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # TODO: Figure out of `EXPOSE 80` is necessary in Dockerfile
+# TODO: rm ACCOUNT
 
 arg="$1"
 
-export DOCKER_BUILD_VERSION="v0"
+export DOCKER_BUILD_VERSION="v4"
 export PROJECT_ID="cltk-api-148615"
 export ACCOUNT="kyle@kyle-p-johnson.com"
 export REGION="us-central1"
@@ -19,13 +20,19 @@ export SERVICE_NAME="cltk-api-d0"
 
 
 if [ $arg = "build" ]; then
-    echo "Building and running Docker ..."
+    echo "Building Docker app ..."
     docker stop $(docker ps -a -q)
     docker rm $(docker ps -a -q)
     docker build -t gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION .
-    docker run -p 80:80 --name $APP_NAME gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION
 fi
 
+if [ $arg = "run" ]; then
+    echo "Running Docker app ..."
+    docker stop $(docker ps -a -q)
+    docker rm $(docker ps -a -q)
+    wait 10
+    docker run -p 80:80 --name $APP_NAME gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION
+fi
 
 if [ $arg = "deploy" ]; then
     echo "Pushing to Google Cloud Platform ..."
@@ -61,8 +68,16 @@ if [ $arg = "deploy" ]; then
     echo "Try curling the external IP. If no response, try again in a few mins."
 fi
 
+# TODO: Make this work or rm it
 if [ $arg = "update" ]; then
+    echo "Updating app to GCP ..."
+    echo "... first pushing Docker app to GCP ..."
+    gcloud docker -- push gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION
+    # TODO: Figure out if this wait is necessary:
+    wait 60
+    echo "... next setting GCP image to new build version ..."
     kubectl set image deployment/$SERVICE_NAME $SERVICE_NAME=gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION
+    echo ""
 fi
 
 #TODO: Figure out whether "service" and "deployment" need different names (though it works fine w/ them being same)
