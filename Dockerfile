@@ -1,12 +1,12 @@
-# nginx-gunicorn-flask
+# Multithread Flask app with Gunicorn, then serve via Nginx
 
 FROM ubuntu:12.04
-MAINTAINER Daniel Riti <dmriti@gmail.com>
+MAINTAINER Kyle P. Johnson <kyle@kyle-p-johnson.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-RUN apt-get install -y python python-pip python-virtualenv nginx gunicorn supervisor
+RUN apt-get install -y python python-pip python-virtualenv nginx gunicorn supervisor git
 
 # Setup flask application
 RUN mkdir -p /deploy/app
@@ -25,6 +25,12 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY gunicorn.conf /etc/supervisor/conf.d/gunicorn.conf
+
+# Get texts
+#RUN git clone https://github.com/cltk/csel_openphilology_corpus.git
+#WORKDIR ~/
+#COPY install_corpora.py ~/
+#RUN python install_corpora.py
 
 
 # Start processes

@@ -54,10 +54,12 @@ api.add_resource(TodoSimple, '/todo/<string:todo_id>')
 
 class TextExample(Resource):
     def get(self):
-        # fp = os.path.expanduser('~/cltk_data/latin/text/latin_text_perseus/Ovid/opensource/ovid.ibis_lat.xml.json')
-        fp = 'example.json'
-        with open(fp) as file_open:
-            return json.load(file_open)
+        # fp = os.path.expanduser('~/cltk_data/json/bede_the_venerable,_saint_673-735__de_locis_santis__unk.json')
+        # fp = 'example.json'
+        # with open(fp) as file_open:
+        #     return json.load(file_open)
+        home = os.path.expanduser('~/')
+        return {'home_files': os.listdir(home),'home_name': home}  # {"home_name": "/root/", "home_files": [".bashrc", ".profile"]}
 
 # http://localhost:5000/lang
 api.add_resource(TextExample, '/text_example')
