@@ -5,7 +5,7 @@
 
 arg="$1"
 
-export DOCKER_BUILD_VERSION="v4"
+export DOCKER_BUILD_VERSION="v8"
 export PROJECT_ID="cltk-api-148615"
 export ACCOUNT="kyle@kyle-p-johnson.com"
 export REGION="us-central1"
@@ -29,6 +29,7 @@ fi
 if [ $arg = "run" ]; then
     echo "Running Docker app ..."
     docker stop $(docker ps -a -q)
+    wait 10
     docker rm $(docker ps -a -q)
     wait 10
     docker run -p 80:80 --name $APP_NAME gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION

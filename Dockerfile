@@ -14,6 +14,7 @@ RUN mkdir -p /deploy/app
 COPY app /deploy/app
 COPY example.json /deploy/app
 WORKDIR /deploy/app
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Setup nginx
