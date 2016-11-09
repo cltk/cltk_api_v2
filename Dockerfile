@@ -1,13 +1,15 @@
 # Multithread Flask app with Gunicorn, then serve via Nginx
 
-FROM ubuntu:16.04
+#FROM ubuntu:16.04
+FROM python:3.5
 MAINTAINER Kyle P. Johnson <kyle@kyle-p-johnson.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 EXPOSE 80
 
 RUN apt-get update
-RUN apt-get install -y python python-pip python-virtualenv nginx gunicorn supervisor git
+#RUN apt-get install -y python python-pip python-virtualenv nginx gunicorn supervisor git
+RUN apt-get install -y nginx supervisor git
 
 # Setup flask application
 RUN mkdir -p /deploy/app
@@ -15,6 +17,7 @@ COPY app /deploy/app
 COPY example.json /deploy/app
 WORKDIR /deploy/app
 RUN pip install --upgrade pip
+RUN pip install gunicorn
 RUN pip install -r requirements.txt
 
 # Setup nginx
@@ -32,7 +35,7 @@ COPY gunicorn.conf /etc/supervisor/conf.d/gunicorn.conf
 #RUN git clone https://github.com/cltk/csel_openphilology_corpus.git
 #WORKDIR ~/
 #COPY install_corpora.py ~/
-#RUN python install_corpora.py
+#RUN python3 install_corpora.py
 
 
 # Start processes
