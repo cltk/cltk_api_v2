@@ -69,7 +69,7 @@ if [ $arg = "deploy" ]; then
     echo "Try curling the external IP. If no response, try again in a few mins."
 fi
 
-# TODO: Make this work or rm it
+
 if [ $arg = "update" ]; then
     echo "Updating app to GCP ..."
     echo "... first pushing Docker app to GCP ..."
