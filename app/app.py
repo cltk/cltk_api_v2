@@ -143,5 +143,42 @@ class AvailableText(Resource):
 
 api.add_resource(AvailableText, '/text/lang/<string:lang>')
 
+
+
+class DisplayText(Resource):
+    def get(self, lang, text_name):
+        repo_rel = '~/cltk_data/corpora/capitains_text_corpora/'
+        repo = os.path.expanduser(repo_rel)
+        if lang == 'greek':
+            lang_dir = 'greekLit'
+            file_ending = '__grc.json'
+        elif lang == 'latin':
+            lang_dir = 'latinLit'
+            file_ending = '__lat.json'
+        else:
+            return NotFound
+        lang_dir = os.path.join(repo, lang_dir)
+        lang_files = os.listdir(lang_dir)
+        lang_files_json = [file for file in lang_files if file.endswith('.json')]
+
+        # parse query str for translation flag
+        translation = request.args.get('translation')
+        if translation == 'english':
+            file_ending = '__eng.json'
+
+        lang_files_filtered = [file for file in lang_files_json if file.endswith(file_ending)]
+        lang_files_filtered_rm_end = [name.rstrip(file_ending) for name in lang_files_filtered]
+
+        text_path = os.path.join(lang_dir, text_name + file_ending)
+        with open(text_path) as file_open:
+            file_read = file_open.read()
+
+        return {'text': file_read}
+
+# curl http://0.0.0.0:5000/text/lang/latin/virgil__aeneid?translation=english
+# curl http://0.0.0.0:5000/text/lang/latin/virgil__aeneid
+api.add_resource(DisplayText, '/text/lang/<string:lang>/<string:text_name>')
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
