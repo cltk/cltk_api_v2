@@ -2,6 +2,7 @@
 
 import json
 import os
+import sys
 
 from flask import Flask, jsonify
 from flask import request  # for getting query string
@@ -92,7 +93,7 @@ api.add_resource(TodoSimple, '/todo/<string:todo_id>')
 
 @app.route('/')
 def available_functionality():
-    return jsonify({'functionality': ['nlp', 'text']})
+    return jsonify({'cltk_api_functionality': ['nlp', 'text']})
 
 
 @app.route('/nlp')
@@ -109,6 +110,7 @@ def text_functionality():
 # Available langs for texts
 class AvailableLangs(Resource):
     def get(self):
+        print('avail langs OK')
         return {'available_languages': ['greek', 'latin']}
 
 api.add_resource(AvailableLangs, '/text/lang')
@@ -118,11 +120,14 @@ class AvailableText(Resource):
     def get(self, lang):
         repo_rel = '~/cltk_data/corpora/capitains_text_corpora/'
         repo = os.path.expanduser(repo_rel)
+        print(repo)
+        raise AssertionError
         if lang == 'greek':
             lang_dir = 'greekLit'
         elif lang == 'latin':
             lang_dir = 'latinLit'
         else:
+            print('bad lang')
             return NotFound
         lang_dir = os.path.join(repo, lang_dir)
         lang_files = os.listdir(lang_dir)
@@ -134,11 +139,13 @@ class AvailableText(Resource):
         elif translation == 'english':
             file_ending = '__eng.json'
         else:
+            print("can't find files")
             return NotFound
 
         lang_files_filtered = [file for file in lang_files_json if file.endswith(file_ending)]
         lang_files_filtered_rm_end = [name.rstrip(file_ending) for name in lang_files_filtered]
 
+        sys.stdout('everything ok')
         return {'language': lang_files_filtered_rm_end}
 
 api.add_resource(AvailableText, '/text/lang/<string:lang>')

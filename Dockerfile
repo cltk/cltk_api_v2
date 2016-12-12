@@ -10,6 +10,9 @@ EXPOSE 80
 RUN apt-get update
 RUN apt-get install -y nginx supervisor git
 
+
+# Remember Docker starts in root ('/') dir
+
 # Setup flask application
 RUN mkdir -p /deploy/app
 COPY app /deploy/app
@@ -31,10 +34,13 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY gunicorn.conf /etc/supervisor/conf.d/gunicorn.conf
 
 # Get texts
-RUN ~/
-RUN mkdir -p ~/cltk_data/corpora/
+WORKDIR /
+RUN mkdir -p /root/cltk_data/corpora
+WORKDIR /root/cltk_data/corpora
 RUN git clone --depth 1 https://github.com/cltk/capitains_text_corpora.git
-
+RUN echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+RUN ls /root/cltk_data/corpora/capitains_text_corpora/
+# so texts end up in '/root/cltk_data/corpora/capitains_text_corpora/'
 
 # Start processes
 CMD ["/usr/bin/supervisord"]
