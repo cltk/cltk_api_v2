@@ -170,9 +170,10 @@ class DisplayText(Resource):
 
         text_path = os.path.join(lang_dir, text_name + file_ending)
         with open(text_path) as file_open:
-            file_read = file_open.read()
+            # file_read = file_open.read()
+            file_dict = json.load(file_open)
 
-        return {'text': file_read}
+        return file_dict
 
 # curl http://0.0.0.0:5000/text/lang/latin/virgil__aeneid?translation=english
 # curl http://0.0.0.0:5000/text/lang/latin/virgil__aeneid
