@@ -5,7 +5,7 @@
 
 arg="$1"
 
-export DOCKER_BUILD_VERSION="v16"
+export DOCKER_BUILD_VERSION="v18"
 export PROJECT_ID="cltk-api-148615"
 export ACCOUNT="kyle@kyle-p-johnson.com"
 export REGION="us-central1"
@@ -29,9 +29,9 @@ fi
 if [ $arg = "run" ]; then
     echo "Running Docker app ..."
     docker stop $(docker ps -a -q)
-    wait 10
+    sleep 10
     docker rm $(docker ps -a -q)
-    wait 10
+    sleep 10
     docker run -p 80:80 --name $APP_NAME gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION
 fi
 
@@ -62,8 +62,9 @@ if [ $arg = "deploy" ]; then
     kubectl expose deployment $SERVICE_NAME --type="LoadBalancer"
     # This prints the external IP, will take a minute:
     echo "Waiting 60 secs for external IP to become available ..."
-    echo 'If no "EXTERNAL-IP" available, run "kubectl get services $DEPLOYMENT_NAME" (getting $DEPLOYMENT_NAME from this Bash file).'
-    wait 60
+    # TODO: insert $SERVICE_NAME into the following string
+    echo 'If no "EXTERNAL-IP" available, run "kubectl get services $SERVICE_NAME" (getting $SERVICE_NAME from this Bash file).'
+    sleep 60
     kubectl get services $SERVICE_NAME
     # TODO: get just external IP and curl it with: `kubectl describe services $SERVICE_NAME | grep "LoadBalancer Ingress"`
     echo "Try curling the external IP. If no response, try again in a few mins."
@@ -74,8 +75,7 @@ if [ $arg = "update" ]; then
     echo "Updating app to GCP ..."
     echo "... first pushing Docker app to GCP ..."
     gcloud docker -- push gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION
-    # TODO: Figure out if this wait is necessary:
-    wait 60
+    sleep 60
     echo "... next setting GCP image to new build version ..."
     kubectl set image deployment/$SERVICE_NAME $SERVICE_NAME=gcr.io/$PROJECT_ID/$APP_NAME:$DOCKER_BUILD_VERSION
     echo ""
