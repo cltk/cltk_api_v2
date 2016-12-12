@@ -137,7 +137,7 @@ class AvailableText(Resource):
             file_ending = '__eng.json'
 
         lang_files_filtered = [file for file in lang_files_json if file.endswith(file_ending)]
-        lang_files_filtered_rm_end = [name.rstrip(file_ending) for name in lang_files_filtered]
+        lang_files_filtered_rm_end = [name[:-len(file_ending)] for name in lang_files_filtered]
 
         return {'language': lang_files_filtered_rm_end}
 
@@ -167,7 +167,6 @@ class DisplayText(Resource):
             file_ending = '__eng.json'
 
         lang_files_filtered = [file for file in lang_files_json if file.endswith(file_ending)]
-        lang_files_filtered_rm_end = [name.rstrip(file_ending) for name in lang_files_filtered]
 
         text_path = os.path.join(lang_dir, text_name + file_ending)
         with open(text_path) as file_open:
