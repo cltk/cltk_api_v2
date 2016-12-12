@@ -38,8 +38,6 @@ WORKDIR /
 RUN mkdir -p /root/cltk_data/corpora
 WORKDIR /root/cltk_data/corpora
 RUN git clone --depth 1 https://github.com/cltk/capitains_text_corpora.git
-RUN echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-RUN ls /root/cltk_data/corpora/capitains_text_corpora/
 # so texts end up in '/root/cltk_data/corpora/capitains_text_corpora/'
 
 # Start processes

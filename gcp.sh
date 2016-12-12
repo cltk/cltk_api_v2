@@ -5,7 +5,7 @@
 
 arg="$1"
 
-export DOCKER_BUILD_VERSION="v15"
+export DOCKER_BUILD_VERSION="v16"
 export PROJECT_ID="cltk-api-148615"
 export ACCOUNT="kyle@kyle-p-johnson.com"
 export REGION="us-central1"

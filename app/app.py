@@ -110,7 +110,6 @@ def text_functionality():
 # Available langs for texts
 class AvailableLangs(Resource):
     def get(self):
-        print('avail langs OK')
         return {'available_languages': ['greek', 'latin']}
 
 api.add_resource(AvailableLangs, '/text/lang')
@@ -120,35 +119,29 @@ class AvailableText(Resource):
     def get(self, lang):
         repo_rel = '~/cltk_data/corpora/capitains_text_corpora/'
         repo = os.path.expanduser(repo_rel)
-        print(repo)
-        raise AssertionError
         if lang == 'greek':
             lang_dir = 'greekLit'
+            file_ending = '__grc.json'
         elif lang == 'latin':
             lang_dir = 'latinLit'
+            file_ending = '__lat.json'
         else:
-            print('bad lang')
             return NotFound
         lang_dir = os.path.join(repo, lang_dir)
         lang_files = os.listdir(lang_dir)
         lang_files_json = [file for file in lang_files if file.endswith('.json')]
 
+        # parse query str for translation flag
         translation = request.args.get('translation')
-        if not translation:
-            file_ending = '__grc.json'
-        elif translation == 'english':
+        if translation == 'english':
             file_ending = '__eng.json'
-        else:
-            print("can't find files")
-            return NotFound
 
         lang_files_filtered = [file for file in lang_files_json if file.endswith(file_ending)]
         lang_files_filtered_rm_end = [name.rstrip(file_ending) for name in lang_files_filtered]
 
-        sys.stdout('everything ok')
         return {'language': lang_files_filtered_rm_end}
 
 api.add_resource(AvailableText, '/text/lang/<string:lang>')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
