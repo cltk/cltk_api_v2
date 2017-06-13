@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# TODO: Figure out of `EXPOSE 80` is necessary in Dockerfile
+# TODO: Figure out if `EXPOSE 80` is necessary in Dockerfile
 # TODO: rm ACCOUNT
 
 arg="$1"
