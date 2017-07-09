@@ -12,6 +12,9 @@ from flask_restful import Resource
 
 from werkzeug.exceptions import NotFound
 
+from lemmatize.lemmatize import Lemmatize
+
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -178,6 +181,7 @@ class DisplayText(Resource):
 # curl http://0.0.0.0:5000/text/lang/latin/virgil__aeneid?translation=english
 # curl http://0.0.0.0:5000/text/lang/latin/virgil__aeneid
 api.add_resource(DisplayText, '/text/lang/<string:lang>/<string:text_name>')
+api.add_resource(Lemmatize, '/nlp/lemmatize/latin/simple')
 
 
 if __name__ == '__main__':
