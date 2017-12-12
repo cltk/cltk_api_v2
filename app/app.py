@@ -1,4 +1,4 @@
-""" hello.py """
+""" app.py """
 
 import json
 import os
@@ -13,6 +13,7 @@ from flask_restful import Resource
 from werkzeug.exceptions import NotFound
 
 from lemmatize.lemmatize import Lemmatize
+from corpus.arabic.utils.pyarabic.araby.strip_harakat import StripHarakat 
 
 
 app = Flask(__name__)
@@ -182,6 +183,7 @@ class DisplayText(Resource):
 # curl http://0.0.0.0:5000/text/lang/latin/virgil__aeneid
 api.add_resource(DisplayText, '/text/lang/<string:lang>/<string:text_name>')
 api.add_resource(Lemmatize, '/nlp/lemmatize/latin/simple')
+api.add_resource(StripHarakat, '/nlp/corpus/arabic/utils/pyarabic/araby/strip_harakat')
 
 
 if __name__ == '__main__':
